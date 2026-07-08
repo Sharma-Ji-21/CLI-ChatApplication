@@ -9,8 +9,9 @@ import {
 } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyBfW0WfOTbFohp07zk8ec4WF6PLc29QRLE",
   authDomain: "cli-chatapplication.firebaseapp.com",
+  databaseURL: "https://cli-chatapplication-default-rtdb.firebaseio.com",
   projectId: "cli-chatapplication",
   storageBucket: "cli-chatapplication.firebasestorage.app",
   messagingSenderId: "55342612463",
@@ -24,6 +25,7 @@ const db = getDatabase(app);
 type User = {
   id: string;
   username: string;
+  password: string;
   online: boolean;
 };
 
@@ -34,9 +36,10 @@ type GroupMessage = {
   timestamp: number;
 };
 
-async function addUser(username: string, userId: string) {
+async function addUser(username: string, userId: string, password: string) {
   await set(ref(db, `users/${userId}`), {
     username,
+    password,
     online: false,
   });
 }
@@ -51,6 +54,21 @@ async function getUsers(): Promise<User[]> {
     id,
     ...(value as Omit<User, "id">),
   }));
+}
+
+async function getUserById(userId: string): Promise<User | null> {
+  const snapshot = await get(ref(db, `users/${userId}`));
+  if (!snapshot.exists()) {
+    return null;
+  }
+  return {
+    id: userId,
+    ...(snapshot.val() as Omit<User, "id">),
+  };
+}
+
+async function setUserOnline(userId: string, online: boolean) {
+  await set(ref(db, `users/${userId}/online`), online);
 }
 
 async function sendGroupMessage(senderId: string, text: string) {
@@ -89,7 +107,10 @@ export {
   db,
   addUser,
   getUsers,
+  getUserById,
+  setUserOnline,
   sendGroupMessage,
   getGroupMessages,
   listenForGroupMessages,
+  GroupMessage,
 };
