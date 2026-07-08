@@ -34,6 +34,134 @@ This project allows multiple users to communicate through a terminal using a sha
 
 ---
 
+# 📦 Installation
+
+## Install Globally
+
+```bash
+npm install -g cli-chatapplication
+```
+
+or run it directly without installing
+
+```bash
+npx cli-chatapplication
+```
+
+---
+
+## Verify Installation
+
+```bash
+cli-chat
+```
+
+If installed correctly, you'll see:
+
+```text
+CLI Chat Application
+
+Enter User ID:
+>
+```
+
+---
+
+# 🚀 Usage
+
+Start the application
+
+```bash
+cli-chat
+```
+
+---
+
+## Login
+
+Enter your credentials
+
+```text
+CLI Chat Application
+
+Enter User ID:
+> om-macbook
+
+Enter Password:
+> 123456
+```
+
+After successful authentication you'll see
+
+```text
+Logged in as Om's MacBook
+
+1. Group Chat
+2. Direct Message
+
+>
+```
+
+---
+
+## Group Chat
+
+Select
+
+```text
+1
+```
+
+Type your message
+
+```text
+> Hello everyone!
+```
+
+Every connected user will instantly receive the message.
+
+---
+
+## Direct Message
+
+Select
+
+```text
+2
+```
+
+Choose a user
+
+```text
+Available Users
+
+1. Om's iPad
+2. Om's iPhone
+
+Select User:
+> 1
+```
+
+Now every message you type will be sent only to the selected user.
+
+---
+
+## Exit
+
+Press
+
+```text
+Ctrl + C
+```
+
+The application automatically:
+
+- Marks you offline
+- Closes the connection
+- Exits gracefully
+
+---
+
 # 🛠 Tech Stack
 
 | Technology | Purpose |
@@ -64,50 +192,6 @@ src/
 │
 └── directChat.ts
     Direct messaging functionality
-```
-
----
-
-# 📦 Installation
-
-Clone the repository
-
-```bash
-git clone https://github.com/Sharma-Ji-21/CLI-ChatApplication.git
-```
-
-Navigate to the project
-
-```bash
-cd CLI-ChatApplication
-```
-
-Install dependencies
-
-```bash
-npm install
-```
-
----
-
-# ▶️ Running the Project
-
-Development Mode
-
-```bash
-npm run dev
-```
-
-Build the project
-
-```bash
-npm run build
-```
-
-Run the compiled project
-
-```bash
-npm start
 ```
 
 ---
