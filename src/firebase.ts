@@ -29,7 +29,7 @@ type User = {
   online: boolean;
 };
 
-type GroupMessage = {
+type Message = {
   id: string;
   senderId: string;
   text: string;
@@ -81,7 +81,7 @@ async function sendGroupMessage(senderId: string, text: string) {
   });
 }
 
-async function getGroupMessages(): Promise<GroupMessage[]> {
+async function getGroupMessages(): Promise<Message[]> {
   const snapshot = await get(ref(db, "groupMessages"));
   if (!snapshot.exists()) {
     return [];
@@ -89,16 +89,55 @@ async function getGroupMessages(): Promise<GroupMessage[]> {
   const data = snapshot.val();
   return Object.entries(data).map(([id, value]) => ({
     id,
-    ...(value as Omit<GroupMessage, "id">),
+    ...(value as Omit<Message, "id">),
   }));
 }
 
-function listenForGroupMessages(callback: (message: GroupMessage) => void) {
+function listenForGroupMessages(callback: (message: Message) => void) {
   const groupMessagesRef = ref(db, "groupMessages");
   onChildAdded(groupMessagesRef, (snapshot) => {
     callback({
       id: snapshot.key!,
-      ...(snapshot.val() as Omit<GroupMessage, "id">),
+      ...(snapshot.val() as Omit<Message, "id">),
+    });
+  });
+}
+
+function getConversationId(user1: string, user2: string): string {
+  return [user1, user2].sort().join("_");
+}
+
+async function sendDirectMessage(
+  senderId: string,
+  receiverId: string,
+  text: string
+) {
+  const conversationId = getConversationId(senderId, receiverId);
+
+  const messagesRef = ref(db, `directMessages/${conversationId}`);
+  const newMessageRef = push(messagesRef);
+
+  await set(newMessageRef, {
+    senderId,
+    receiverId,
+    text,
+    timestamp: Date.now(),
+  });
+}
+
+function listenForDirectMessages(
+  currentUserId: string,
+  otherUserId: string,
+  callback: (message: Message) => void
+) {
+  const conversationId = getConversationId(currentUserId, otherUserId);
+
+  const messagesRef = ref(db, `directMessages/${conversationId}`);
+
+  onChildAdded(messagesRef, (snapshot) => {
+    callback({
+      id: snapshot.key!,
+      ...(snapshot.val() as Omit<Message, "id">),
     });
   });
 }
@@ -112,5 +151,9 @@ export {
   sendGroupMessage,
   getGroupMessages,
   listenForGroupMessages,
-  GroupMessage,
+  sendDirectMessage,
+  listenForDirectMessages,
+  getConversationId,
+  User,
+  Message,
 };
