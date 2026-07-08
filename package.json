@@ -1,18 +1,39 @@
 {
   "name": "cli-chatapplication",
   "version": "1.0.0",
-  "description": "",
+  "description": "A real-time CLI Chat Application built with TypeScript and Firebase Realtime Database.",
+  "author": "Om Sharma",
   "license": "ISC",
-  "author": "",
   "type": "commonjs",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "keywords": [
+    "cli",
+    "chat",
+    "firebase",
+    "terminal",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sharma-Ji-21/CLI-ChatApplication.git"
+  },
+  "homepage": "https://github.com/Sharma-Ji-21/CLI-ChatApplication",
+  "bugs": {
+    "url": "https://github.com/Sharma-Ji-21/CLI-ChatApplication/issues"
+  },
+  "bin": {
+    "cli-chat": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx src/index.ts"
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
-    "firebase": "^12.15.0",
-    "readline": "^1.3.0"
+    "firebase": "^12.15.0"
   },
   "devDependencies": {
     "@types/node": "^26.1.1",

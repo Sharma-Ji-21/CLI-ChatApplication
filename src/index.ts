@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /// <reference types="node" />
 
 import * as readline from "node:readline";
